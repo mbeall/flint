@@ -278,3 +278,19 @@ function theme_version() {
 }
 
 add_filter( 'use_default_gallery_style', '__return_false' );
+
+/*
+ * Create theme functions for download button
+ */
+function has_download_btn() {
+	global $post;
+	$custom = get_post_custom($post->ID);
+	if (!empty($custom['download_link'])) {return true;}
+	else {return false;}
+}
+function the_download_btn() {
+	global $post;
+	$custom = get_post_custom($post->ID);
+	isset($custom['download_label']) ? $label = $custom['download_label'][0] : $label = 'Download';
+	echo '<a class="btn btn-primary btn-block visible-lg" href="' . $custom['download_link'][0] . '"><i class="icon-download"></i> ' . $label . '</a>';
+}
