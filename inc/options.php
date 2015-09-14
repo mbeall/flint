@@ -63,7 +63,7 @@ function flint_get_options( $option = null ) {
   $defaults['body_bg']    = get_theme_mod( 'background_color', $defaults['body_bg'] );
   $defaults['fill_color'] = get_theme_mod( 'header_textcolor', $defaults['fill_color'] );
 
-  // BEGIN - backwards compatibility
+  // Backwards compatability begins here. Remove in 1.5+.
   $colors    = get_option( 'flint_colors' );
   $fonts     = get_option( 'flint_fonts' );
   $general   = get_option( 'flint_general' );
@@ -102,7 +102,7 @@ function flint_get_options( $option = null ) {
 
   $defaults['widget_areas_above']   = ! empty( $wa['header'] )                     ? $wa['header']                     : $defaults['widget_areas_above'];
   $defaults['widget_areas_below']   = ! empty( $wa['footer'] )                     ? $wa['footer']                     : $defaults['widget_areas_below'];
-  // END - backwards compatibility
+  // Backwards compatability ends here. Remove in 1.5+.
   $flint_options = wp_parse_args( get_option( 'flint_options' ), $defaults );
 
   if ( ! empty( $option ) ) {
@@ -151,7 +151,7 @@ function flint_get_options( $option = null ) {
     );
 
     $_option = str_replace( $search, $replace, $option );
-
+    flint_deprecated_parameter( __FUNCTION__, '$option', '1.4.0' );
     return $flint_options[ $_option ];
   } else {
     return $flint_options;
@@ -209,7 +209,7 @@ function flint_get_address( $schema = true, $args = array() ) {
     'close'  => '',
   );
 
-  $args = $schema == true ? wp_parse_args( $args, $defaults ) : wp_parse_args( $args, $alts );
+  $args = true === $schema ? wp_parse_args( $args, $defaults ) : wp_parse_args( $args, $alts );
   $output = $args['open'] . $args['before'] . $args['item1'] . $args['sep1'] . $args['item2'] . $args['sep2'] . $args['item3'] . $args['after'] . $args['close'];
   echo $output;
 }

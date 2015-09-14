@@ -5,6 +5,7 @@
  * @package Flint
  * @since 1.4.0
  */
+
 get_header();
 flint_get_sidebar( 'header' );
 ?>
@@ -25,10 +26,16 @@ flint_get_sidebar( 'header' );
 
       <?php while ( have_posts() ) : the_post(); ?>
 
-        <?php $type = get_post_type();
-          if ( $type == 'post' ) { get_template_part( 'format', get_post_format() );
-} elseif ( $type == 'page' ) { get_template_part( 'templates/' . flint_get_template(), 'content' );
-} else { get_template_part( 'type', get_post_type() ); } ?>
+        <?php
+          $type = get_post_type();
+          if ( 'post' === $type ) {
+            get_template_part( 'format', get_post_format() );
+          } elseif ( 'page' === $type ) {
+            get_template_part( 'templates/' . flint_get_template(), 'content' );
+          } else {
+            get_template_part( 'type', get_post_type() );
+          }
+        ?>
 
       <?php endwhile; ?>
 

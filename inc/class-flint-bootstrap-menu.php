@@ -1,10 +1,16 @@
 <?php
 /**
+ * Flint_Bootstrap_Menu class
+ *
+ * @package Flint
+ * @since 1.4.0
+ */
+
+/**
  * Extended Walker class for use with the
  * Twitter Bootstrap toolkit Dropdown menus in Wordpress.
  * Edited to support n-levels submenu.
  * @author johnmegahan https://gist.github.com/1597994, Emanuele 'Tex' Tessore https://gist.github.com/3765640
- * @since 1.4.0
  */
 class Flint_Bootstrap_Menu extends Walker_Nav_Menu {
   /**
@@ -52,7 +58,7 @@ class Flint_Bootstrap_Menu extends Walker_Nav_Menu {
      * Add divider class to an element to get a divider before it.
      */
     $divider_class_position = array_search( 'divider', $classes );
-    if ( $divider_class_position !== false ) {
+    if ( false !== $divider_class_position ) {
       $output .= "<li class=\"divider\"></li>\n";
       unset( $classes[ $divider_class_position ] );
     }
@@ -76,12 +82,12 @@ class Flint_Bootstrap_Menu extends Walker_Nav_Menu {
     $attributes .= ! empty( $item->target )             ? ' target="' . esc_attr( $item->target ) .'"' : '';
     $attributes .= ! empty( $item->xfn )                ? ' rel="'    . esc_attr( $item->xfn ) .'"' : '';
     $attributes .= ! empty( $item->url )                ? ' href="'   . esc_attr( $item->url ) .'"' : '';
-    $attributes .= ($depth == 0 && $args->has_children)  ? ' class="dropdown-toggle" data-toggle="dropdown"' : '';
+    $attributes .= ( 0 === $depth && $args->has_children )  ? ' class="dropdown-toggle" data-toggle="dropdown"' : '';
 
     $item_output = $args->before;
     $item_output .= '<a'. $attributes .'>';
     $item_output .= $args->link_before . apply_filters( 'the_title', $item->title, $item->ID ) . $args->link_after;
-    $item_output .= ($depth == 0 && $args->has_children) ? ' <b class="caret"></b></a>' : '</a>';
+    $item_output .= ( 0 === $depth && $args->has_children ) ? ' <b class="caret"></b></a>' : '</a>';
     $item_output .= $args->after;
 
     $output .= apply_filters( 'walker_nav_menu_start_el', $item_output, $item, $depth, $args );
@@ -90,7 +96,12 @@ class Flint_Bootstrap_Menu extends Walker_Nav_Menu {
   /**
    * Display element
    *
-   * @ignore
+   * @param object $element           Menu item data object.
+   * @param array  $children_elements Array of menu item data object that are children of $element.
+   * @param int    $max_depth         Maximum depth of menu item.
+   * @param int    $depth             Depth of menu item.
+   * @param array  $args              An array of arguments. @see wp_nav_menu()
+   * @param string $output            Passed by reference. Used to append additional content.
    */
   function display_element( $element, &$children_elements, $max_depth, $depth = 0, $args, &$output ) {
     if ( ! $element ) {
@@ -110,7 +121,7 @@ class Flint_Bootstrap_Menu extends Walker_Nav_Menu {
      * Title
      * descend only when the depth is right and there are childrens for this element
      */
-    if ( ($max_depth == 0 || $max_depth > $depth + 1 ) && isset( $children_elements[ $id ] ) ) {
+    if ( ( 0 === $max_depth || $max_depth > $depth + 1 ) && isset( $children_elements[ $id ] ) ) {
 
       foreach ( $children_elements[ $id ] as $child ) {
         /**

@@ -22,7 +22,7 @@ flint_get_sidebar( 'header' );
 
         <?php
             $type = get_post_type();
-            if ( $type == 'post' ) :
+            if ( 'post' === $type ) :
               get_template_part( 'format', get_post_format() );
             else :
               get_template_part( 'type', $type );
@@ -36,7 +36,8 @@ flint_get_sidebar( 'header' );
            * If comments are open or we have at least one comment, load up the comment template
            */
           if ( comments_open() || '0' != get_comments_number() ) {
-            comments_template(); }
+            comments_template();
+          }
         ?>
 
       <?php endwhile; ?>
